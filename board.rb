@@ -1,13 +1,17 @@
 class Board
+	attr_reader :board
 	def initialize 
-		@board = (1..9).to_a
+		@board = Array.new(9, ' ')
 	end
 
-	def to_s
+	def move(location, player)
+		@board[location.to_i - 1] = player
+	end
+
+	def show_board
 		@board.each_slice(3) { |row| puts row.join(" | ")}
 	end
 end
 
 
-board = Board.new
-puts board
+
