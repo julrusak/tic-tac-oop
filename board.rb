@@ -4,8 +4,12 @@ class Board
 		@board = Array.new(9, ' ')
 	end
 
-	def move(location, player)
-		@board[location.to_i - 1] = player
+	def move(position, player)
+		 @board[position -1] = player
+	end
+
+	def position_taken?(position)
+		@board[position - 1] == 'X' || @board[position - 1] == 'O' ? true : false
 	end
 
 	def show_board

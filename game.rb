@@ -29,7 +29,32 @@ class Game
 	end
 
 	def play
-		puts "Let's play"
+		until winner?
+			puts board.show_board 
+			player_move	
+		end
+	end
+
+	def player_move
+		puts "\n What's your move: "
+		player_choice = gets.chomp.to_i
+		if valid_move?(player_choice)
+			if board.position_taken?(player_choice)
+				puts "Posiiton already taken!"
+			else
+				board.move(player_choice, @player.piece)
+			end
+		else
+			puts "Pick a number 1 - 9"
+		end 
+	end
+
+	def winner?
+		return false
+	end
+
+	def valid_move?(player_choice)
+		player_choice.between?(1, 9)
 	end
 end
 
