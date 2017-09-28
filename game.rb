@@ -16,7 +16,7 @@ class Game
 		puts (1..9).to_a.each_slice(3) { |row| puts row.join(" | ")}
 		puts "\n\n Try to get three #{@player.piece}'s in a row and you win! \n PRESS ANY KEY TO BEGIN"
 		STDIN.getch 
-		play()
+		play
 	end
 
 	def assign_pieces
@@ -31,7 +31,9 @@ class Game
 	def play
 		until winner?
 			puts board.show_board 
-			player_move	
+			player_move
+			puts board.show_board
+			computer_move
 		end
 	end
 
@@ -46,6 +48,20 @@ class Game
 			end
 		else
 			puts "Pick a number 1 - 9"
+		end 
+	end
+
+	def computer_move
+		computer_choice = rand(1..9)
+		@player.piece == 'X' ? computer_piece = 'Y' : computer_piece = 'X'
+		if valid_move?(computer_choice)
+			if board.position_taken?(computer_choice)
+				computer_move
+			else
+				board.move(computer_choice, computer_piece)
+			end
+		else
+			computer_move
 		end 
 	end
 
