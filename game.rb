@@ -32,10 +32,14 @@ class Game
 	def start
 		puts "Let's play"
 		until winner?
+			puts "#{@current_turn} is the turn"
 			play
 			winner?
 			@current_turn += 1
 		end
+		puts "\e[H\e[2J \n"
+		@current_turn % 2 == 0 ? (puts "Game Over") : (puts "Congratulations, you won!")
+		board.show_board
 	end
 
 	def play
