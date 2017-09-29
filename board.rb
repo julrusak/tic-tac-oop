@@ -5,20 +5,40 @@ class Board
 	end
 
 	def move(position, player)
-		 @board[position -1] = player
+		 board[position -1] = player
 	end
 
 	def position_taken?(position)
-		@board[position - 1] == 'X' || @board[position - 1] == 'O' ? true : false
+		board[position -1] == 'X' || board[position -1] == 'O' ? true : false
+	end
+
+	def board_formatted
+		board.each_slice(3).to_a
 	end
 
 	def show_board
-		@board.each_slice(3) { |row| puts row.join(" | ")}
+		puts "\n <<<< BOARD >>>>"
+		board_formatted.each { |row| puts row.join(" | ")}
 	end
 
 	def row_check
-		# @board.each_slice(3) { |row| puts row.all? == 'X' || row.all? == 'Y' }
-		board.each_slice(3) { |row| puts row.all? {|space| space == 'X' || space == 'Y'} }
+		board_formatted.each do |row|
+	    return true if row.all? {|space| space == 'X' || space == 'Y'}  # return from find
+	  end
+	  false
+	end
+
+	def column_check
+		board_formatted.transpose.each do |column|
+	    return true if column.all? {|space| space == 'X' || space == 'Y'}  # return from find
+	  end
+	  false
+	end
+
+	def diag_check
+		# algorithms for finding array of correct boxes below
+		# diag_1 = (0..2).collect { |i| new_board[i][i] }
+		# diag_2 = (0..2).collect { |i| new_board.reverse[i][i] }
 	end
 end
 

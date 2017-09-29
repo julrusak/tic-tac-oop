@@ -7,6 +7,7 @@ class Game
 	def initialize
 		@board = Board.new
 		@player = Player.new
+		@winner = false
 	end
 
 	def introduction
@@ -29,25 +30,27 @@ class Game
 	end
 
 	def play
-		until winner?
-			puts board.show_board 
+		until @winner
+			board.show_board 
 			player_move
-			puts board.show_board
+			winner?
+			board.show_board
+			sleep 1
+			puts "\n Computer moves..."
 			computer_move
+			winner?
 		end
+		puts "Win"
 	end
 
 	def player_move
 		puts "\n What's your move: "
 		player_choice = gets.chomp.to_i
 		if valid_move?(player_choice)
-			if board.position_taken?(player_choice)
-				puts "Posiiton already taken!"
-			else
 				board.move(player_choice, player.piece)
-			end
 		else
-			puts "Pick a number 1 - 9"
+			puts "Please make a valid move, number 1 - 9 in an available spot!"
+			player_move
 		end 
 	end
 
@@ -66,11 +69,12 @@ class Game
 	end
 
 	def winner?
-		board.row_check
+		@winner = true  if board.row_check || board.column_check 
+		 # || board.diag_check
 	end
 
 	def valid_move?(player_choice)
-		player_choice.between?(1, 9)
+		player_choice.between?(1, 9) && !board.position_taken?(player_choice)
 	end
 end
 
