@@ -40,6 +40,7 @@ class Game
 		puts "\e[H\e[2J \n"
 		@current_turn % 2 == 0 ? (puts "Game Over") : (puts "Congratulations, you won!")
 		board.show_board
+		play_again?
 	end
 
 	def play
@@ -61,23 +62,27 @@ class Game
 	def computer_move
 		computer_choice = rand(1..9)
 		player.piece == 'X' ? computer_piece = 'O' : computer_piece = 'X'
-		if valid_move?(computer_choice)
-			if board.position_taken?(computer_choice)
-				computer_move
-			else
-				board.move(computer_choice, computer_piece)
-			end
+		valid_move?(computer_choice) ? board.move(computer_choice, computer_piece) : computer_move
+	end
+
+	def play_again?
+		puts "Would you like to play again? (Y)"
+		response = gets.chomp.upcase
+		if response == "Y"
+			board.clear
+			@current_turn = 0
+			introduction
 		else
-			computer_move
-		end 
+			puts "\e[H\e[2J \n Thanks for playing. Goodbye!"
+		end
 	end
 
 	def winner?
 		return true if board.row_check || board.column_check || board.diag_check
 	end
 
-	def valid_move?(player_choice)
-		player_choice.between?(1, 9) && !board.position_taken?(player_choice)
+	def valid_move?(square)
+		square.between?(1, 9) && !board.position_taken?(square)
 	end
 end
 

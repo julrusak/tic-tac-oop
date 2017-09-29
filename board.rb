@@ -44,6 +44,10 @@ class Board
 		end
 		false
 	end
+
+	def clear
+		@board = Array.new(9, ' ')
+	end
 end
 
 
