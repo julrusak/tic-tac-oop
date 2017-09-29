@@ -7,7 +7,7 @@ class Game
 	def initialize
 		@board = Board.new
 		@player = Player.new
-		@winner = false
+		@current_turn = 0
 	end
 
 	def introduction
@@ -17,7 +17,7 @@ class Game
 		puts (1..9).to_a.each_slice(3) { |row| puts row.join(" | ")}
 		puts "\n\n Try to get three #{player.piece}'s in a row and you win! \n PRESS ANY KEY TO BEGIN"
 		STDIN.getch 
-		play
+		start
 	end
 
 	def assign_pieces
@@ -29,22 +29,22 @@ class Game
 		end
 	end
 
-	def play
-		until @winner
-			board.show_board 
-			player_move
+	def start
+		puts "Let's play"
+		until winner?
+			play
 			winner?
-			board.show_board
-			sleep 1
-			puts "\n Computer moves..."
-			computer_move
-			winner?
+			@current_turn += 1
 		end
-		puts "Win"
+	end
+
+	def play
+		@current_turn % 2 == 0 ? player_move : computer_move
 	end
 
 	def player_move
 		puts "\n What's your move: "
+		board.show_board
 		player_choice = gets.chomp.to_i
 		if valid_move?(player_choice)
 				board.move(player_choice, player.piece)
@@ -69,8 +69,7 @@ class Game
 	end
 
 	def winner?
-		@winner = true  if board.row_check || board.column_check 
-		 # || board.diag_check
+		return true if board.row_check || board.column_check || board.diag_check
 	end
 
 	def valid_move?(player_choice)
