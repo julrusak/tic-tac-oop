@@ -32,7 +32,6 @@ class Game
 	def start
 		puts "Let's play"
 		until winner?
-			puts "#{@current_turn} is the turn"
 			play
 			winner?
 			@current_turn += 1
@@ -68,7 +67,7 @@ class Game
 	def play_again?
 		puts "Would you like to play again? (Y)"
 		response = gets.chomp.upcase
-		if response == "Y"
+		if response == "Y" || response == "YES"
 			board.clear
 			@current_turn = 0
 			introduction
@@ -85,6 +84,3 @@ class Game
 		square.between?(1, 9) && !board.position_taken?(square)
 	end
 end
-
-game = Game.new
-game.introduction
