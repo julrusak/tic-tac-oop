@@ -14,4 +14,4 @@ Move into the directory:
 
 And then execute:
 
-    $ runner.rb
+    $ ruby runner.rb
