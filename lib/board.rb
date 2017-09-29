@@ -1,8 +1,8 @@
 class Board
-	attr_reader :board
-	def initialize 
-		@board = Array.new(9, ' ')
-	end
+  attr_reader :board
+  def initialize 
+    @board = Array.new(9, ' ')
+  end
 
 	def move(position, player)
 		 board[position -1] = player
