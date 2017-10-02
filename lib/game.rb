@@ -89,20 +89,20 @@ class Game
   end
 
   def end_game
-		puts "\e[H\e[2J \n"
+    puts "\e[H\e[2J \n"
     board.show_board
-		if draw?
-			puts "It's a draw!"
-		else
-		  self.current_turn % 2 == 0 ? (puts "Game Over") : (puts "Congratulations, you won!")
-		end
+    if draw?
+      puts "It's a draw!"
+    else
+      self.current_turn % 2 == 0 ? (puts "Game Over") : (puts "Congratulations, you won!")
+    end
     play_again?
   end
   
   def restart
-  	board.clear
-  	introduction
-  	self.current_turn = 1
+    board.clear
+    introduction 
+    self.current_turn = 1
   end
 end
 
