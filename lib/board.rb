@@ -12,12 +12,16 @@ class Board
     board[position -1] == 'X' || board[position -1] == 'O' ? true : false
   end
 
+  def guide
+  	(1..9).to_a.each_slice(3) { |row| puts row.join(" | ")}
+  end
+
   def board_formatted
     board.each_slice(3).to_a
   end
 
   def show_board
-    puts "\n <<<< BOARD >>>>"
+    puts "<<BOARD>>"
     board_formatted.each { |row| puts row.join(" | ")}
   end
 
@@ -43,6 +47,10 @@ class Board
       end
     end
     false
+  end
+
+  def draw?
+    !board.map.any? { |cell| cell == ' ' }
   end
 
   def clear

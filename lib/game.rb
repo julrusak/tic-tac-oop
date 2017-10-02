@@ -4,25 +4,25 @@ require_relative 'player'
 
 class Game
   attr_reader :board, :player
+  attr_accessor :current_turn
   def initialize
     @board = Board.new
     @player = Player.new
-    @current_turn = 0
+    @current_turn = 1
   end
 
   def introduction
-    puts "\e[H\e[2J \n <<<<<<<<  WELCOME TO TIC_TAC_TOE  >>>>>>>>"
     player.piece = assign_pieces
     puts "\e[H\e[2J Alright, player #{player.piece}...\n\n Here's how to play! \n Choose a number where you would like to place your #{player.piece}, here are your options.\n \n"
-    puts (1..9).to_a.each_slice(3) { |row| puts row.join(" | ")}
+    board.guide
     puts "\n\n Try to get three #{player.piece}'s in a row and you win! \n PRESS ANY KEY TO BEGIN"
     STDIN.getch 
     start
   end
 
   def assign_pieces
-    loop do
       puts "\n\n Choose your piece. \n\n 'X' or 'O'"
+    loop do
       player.piece = gets.chomp.upcase
       return player.piece if player.piece == 'X' || player.piece == 'O'
       puts "error piece has to be X or O"
@@ -30,20 +30,18 @@ class Game
   end
 
   def start
-    puts "Let's play"
-    until winner?
+    while true
       play
-      winner?
-      @current_turn += 1
+      if game_over?
+      	end_game
+      	return
+      end
+      self.current_turn += 1
     end
-    puts "\e[H\e[2J \n"
-    @current_turn % 2 == 0 ? (puts "Game Over") : (puts "Congratulations, you won!")
-    board.show_board
-    play_again?
   end
 
   def play
-    @current_turn % 2 == 0 ? player_move : computer_move
+    self.current_turn % 2 == 0 ? computer_move : player_move
   end
 
   def player_move
@@ -54,7 +52,7 @@ class Game
       board.move(player_choice, player.piece)
     else
       puts "Please make a valid move, number 1 - 9 in an available spot!"
-    player_move
+      player_move
     end 
   end
 
@@ -68,20 +66,43 @@ class Game
     puts "Would you like to play again? (Y)"
     response = gets.chomp.upcase
     if response == "Y" || response == "YES"
-      board.clear
-      @current_turn = 0
-      introduction
+      restart
     else
       puts "\e[H\e[2J \n Thanks for playing. Goodbye!"
     end
   end
+  
+  def valid_move?(square)
+    square.between?(1, 9) && !board.position_taken?(square)
+  end
+
+  def game_over?
+    return true if winner? || draw?
+   end
 
   def winner?
     return true if board.row_check || board.column_check || board.diag_check
   end
 
-  def valid_move?(square)
-    square.between?(1, 9) && !board.position_taken?(square)
+  def draw?
+    !board.board.map.any? { |cell| cell == ' ' }
+  end
+
+  def end_game
+		puts "\e[H\e[2J \n"
+    board.show_board
+		if draw?
+			puts "It's a draw!"
+		else
+		  self.current_turn % 2 == 0 ? (puts "Game Over") : (puts "Congratulations, you won!")
+		end
+    play_again?
+  end
+  
+  def restart
+  	board.clear
+  	introduction
+  	self.current_turn = 1
   end
 end
 
