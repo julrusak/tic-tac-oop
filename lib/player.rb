@@ -7,5 +7,4 @@ class Player
   def assign_piece(piece)
     @piece = piece
   end 
-
 end
