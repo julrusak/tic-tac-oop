@@ -31,7 +31,7 @@ class Game
   end
 
   def start
-    while true
+    while !game_over?
       play
       if game_over?
       	end_game
@@ -89,7 +89,7 @@ class Game
 
   # algorithm to determine if all cells are filled but no winner
   def draw?
-    !board.board.map.any? { |cell| cell == ' ' }
+    !board.board.map.any? { |cell| cell == ' ' } && !winner?
   end
 
   # show closing message based on outcome of game
@@ -106,8 +106,8 @@ class Game
   
   def restart
     board.clear
-    introduction 
     self.current_turn = 1
+    introduction 
   end
 end
 
