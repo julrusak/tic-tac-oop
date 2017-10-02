@@ -20,6 +20,7 @@ class Game
     start
   end
 
+  # Allow user to choose X or O
   def assign_pieces
       puts "\n\n Choose your piece. \n\n 'X' or 'O'"
     loop do
@@ -71,11 +72,13 @@ class Game
       puts "\e[H\e[2J \n Thanks for playing. Goodbye!"
     end
   end
-  
+
+  #Ensure choice is a number between 1 and 9 and that the cell is free  
   def valid_move?(square)
     square.between?(1, 9) && !board.position_taken?(square)
   end
 
+  # game is over if the board is full or three in a row
   def game_over?
     return true if winner? || draw?
    end
@@ -84,10 +87,12 @@ class Game
     return true if board.row_check || board.column_check || board.diag_check
   end
 
+  # algorithm to determine if all cells are filled but no winner
   def draw?
     !board.board.map.any? { |cell| cell == ' ' }
   end
 
+  # show closing message based on outcome of game
   def end_game
     puts "\e[H\e[2J \n"
     board.show_board
