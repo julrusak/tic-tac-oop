@@ -5,31 +5,21 @@ require_relative 'player'
 class Game
   attr_reader :board, :player
   attr_accessor :current_turn
-  def initialize
-    @board = Board.new
-    @player = Player.new
+  def initialize(board, player)
+    @board = board
+    @player = player
     @current_turn = 1
   end
 
   def introduction
-    player.piece = assign_pieces
+    player.assign_piece
     puts "\e[H\e[2J Alright, player #{player.piece}...\n\n Here's how to play! \n Choose a number where you would like to place your #{player.piece}, here are your options.\n \n"
     board.guide
     puts "\n\n Try to get three #{player.piece}'s in a row and you win! \n PRESS ANY KEY TO BEGIN"
     STDIN.getch 
     start
   end
-
-  # Allow user to choose X or O
-  def assign_pieces
-      puts "\n\n Choose your piece. \n\n 'X' or 'O'"
-    loop do
-      player.piece = gets.chomp.upcase
-      return player.piece if player.piece == 'X' || player.piece == 'O'
-      puts "error piece has to be X or O"
-    end
-  end
-
+  
   def start
     while !game_over?
       play
